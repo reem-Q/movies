@@ -11,13 +11,13 @@ import Fluent
 
 struct CreateActor: AsyncMigration {
     func prepare(on database: Database) async throws {
-        try await database.schema("Actor")
+        try await database.schema("actors")
             .id()
-            .field("title", .string)
+            .field("name", .string)
             .create()
     }
 
     func revert(on database: Database) async throws {
-        try await database.schema("movie").delete()
+        try await database.schema("actors").delete()
     }
 }

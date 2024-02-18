@@ -8,17 +8,27 @@ public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
-    app.databases.use(DatabaseConfigurationFactory.postgres(configuration: .init(
-        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-        port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? SQLPostgresConfiguration.ianaPortNumber,
-        username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-        password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-        database: Environment.get("DATABASE_NAME") ?? "vapor_database",
-        tls: .prefer(try .init(configuration: .clientDefault)))
-    ), as: .psql)
+    app.databases.use(.postgres(hostname:"localhost",username: "postgres" , password: "", database: "movies")  , as: .psql)
+    
+    app.migrations.add(CreateMovie())
+    
+    app.migrations.add(CreateReivew())
+
+    app.migrations.add(CreateActor())
+
+    app.migrations.add(CretaeMovieActor())
+    
 
     app.migrations.add(CreateTodo())
+    
+    
+    try app.register(collection: MovieController())
+    
+    try app.register(collection: ActorController())
 
+    try app.register(collection:  ReviewController())
+    
+    try app.register(collection: MovieActorrContoller())
     // register routes
     try routes(app)
 }

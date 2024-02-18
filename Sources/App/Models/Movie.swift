@@ -19,6 +19,13 @@ final class Movie : Model , Content  {
     @Field(key: "title") //cloume
     var title : String
     
+    //moview has many reviews 
+    @Children(for: \.$movie)
+    var reviews : [Review]
+    
+    @Siblings(through: MovieActor.self, from: \.$movie, to: \.$actror)
+    var actors : [Actor]
+    
     init() {}
     
     init(id : UUID? , title : String){

@@ -12,13 +12,16 @@ import FluentPostgresDriver
 
 final class Actor  : Content , Model {
     
-    static let schema: String = "Actor"
+    static let schema: String = "actors"
     
     @ID(key: .id)
     var id : UUID?
     
     @Field(key: "name")
     var name : String
+    
+    @Siblings(through: MovieActor.self, from: \.$actror, to: \.$movie)
+    var movies : [Movie]
     
     init(){}
     
