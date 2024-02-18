@@ -1,0 +1,27 @@
+//
+//  File.swift
+//  
+//
+//  Created by Reem Quhal on 16/02/2024.
+//
+
+import Foundation
+
+import Foundation
+import Vapor
+import Fluent
+final class ActorController : RouteCollection {
+    func boot(routes: Vapor.RoutesBuilder) throws {
+        
+        let actor = routes.grouped("actor")
+        
+        actor.post(use : createActor)
+    }
+    
+    func createActor(req : Request) async throws -> Actor
+    {
+        let actor = try req.content.decode(Actor.self)
+        try await actor.create(on: req.db)
+        return actor
+    }
+}
